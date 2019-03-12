@@ -26,6 +26,10 @@ const matrixMult = (matrixA, matrixB) => {
 const matrixA = [[1, 2, 3], [1, 2, 3], [1, 2, 3]];
 const matrixB = [[2, 2, 2], [2, 2, 2], [2, 2, 2]];
 
+console.log("Started counting time ", new Date().getMilliseconds());
+
 const result = matrixMult(matrixA, matrixB);
+
+console.log("Ended counting time ", new Date().getMilliseconds());
 
 console.log(result);
