@@ -3,24 +3,23 @@ const NS_PER_SEC = 1e9;
 const matrixMult = (matrixA, matrixB) => {
   let finalMatrix = [];
 
-  for (let i = 0; i < matrixA.length; i++) {
-    const lineA = matrixA[i];
+  matrixA.forEach(lineA => {
     let newLine = [];
 
-    for (let j = 0; j < matrixB.length; j++) {
-      const lineB = matrixB[j];
-
+    matrixB.forEach((lineB, indexB) => {
       let newElement = 0;
-      for (let k = 0; k < lineB.length; k++) {
-        const elementA = lineA[j];
-        const elementB = lineB[k];
+
+      lineB.forEach(elementB => {
+        const elementA = lineA[indexB];
+
         newElement += elementA * elementB;
-      }
+      });
+
       newLine.push(newElement);
-    }
+    });
 
     finalMatrix.push(newLine);
-  }
+  });
 
   return finalMatrix;
 };
