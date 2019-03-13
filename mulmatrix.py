@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
 # In[1]:
@@ -8,31 +8,28 @@ import random
 import time
 
 
-# In[7]:
+# In[14]:
 
 
-def stdMul(matrixes):
+def stdMul(ma, mb, result):
     """
     Multiplies two given matrixes and measure time taken to multiply them.
     """
-    mc = [[0 for j in range(size)] for i in range(size)]
+    size = len(ma)
     start = 0
     end = 0
 
-    start = time.perf_counter_ns()
+    start = time.process_time()
     for i in range(size):
         for j in range(size):
             for k in range(size):
-                mc[i][j] += matrixes['A'][i][k] * matrixes['B'][k][j]
-    end = time.perf_counter_ns() 
+                result[i][j] += ma[i][k] * mb[k][j]
+    end = time.process_time()
     
-#     print("Result Matrix")
-#     printMatrix(mc)
-    
-    print("Elapsed Time: {elapsed:.0f} ns".format(elapsed=(end-start)))
+    print("Elapsed Time: {elapsed:.5f} s".format(elapsed=(end-start)))
 
 
-# In[3]:
+# In[8]:
 
 
 def lineMul(matrixes):
@@ -40,23 +37,27 @@ def lineMul(matrixes):
     pass
 
 
-# In[4]:
+# In[9]:
 
 
-def MatrixMaker(size):
+def createRandomMatrix(size):
     """
-    Returns a dict with square matrixes A and B of size 'size' filled with random integer numbers from 0 to size.
+    Returns a matrix of size 'size' filled with random integer numbers from 0 to 100.
     """
-    ma = [[random.randint(0, size) for j in range(size)] for i in range(size)]
-    mb = [[random.randint(0, size) for j in range(size)] for i in range(size)]
+    matrix = [[random.randint(0, 100) for j in range(size)] for i in range(size)]
     
+    return matrix
+
+def createZeroMatrix(size):
+    """
+    Returns a matrix of size 'size' filled with random integer numbers from 0 to 100.
+    """
+    matrix = [[0 for j in range(size)] for i in range(size)]
     
-    mb.reverse()
-    
-    return dict(zip(['A', 'B'], [ma, mb]))
+    return matrix
 
 
-# In[5]:
+# In[10]:
 
 
 def printMatrix(matrix):
@@ -77,7 +78,7 @@ def printMatrix(matrix):
     print(string)
 
 
-# In[8]:
+# In[15]:
 
 
 while True:
@@ -93,26 +94,28 @@ while True:
     elif option == 0:
         break
         
-    print('\n')
- 
     size = int(input('Dimension? '))
     
     if size <= 0:
         print('Invalid dimension.\n')
         continue
     
-    matrixes = MatrixMaker(size)
-    
-#     for i in matrixes.items():
-#         print("Matrix " + i[0])
-#         printMatrix(i[1])
+    ma = createRandomMatrix(size)
+    mb = createRandomMatrix(size)
+    mc = createZeroMatrix(size)
  
     if option == 1:
         print("Standard Multiplication")
-        stdMul(matrixes)
+        stdMul(ma, mb, mc)
         break
     else:
         print("Line Multiplication")
-        lineMul(matrixes)
+#         lineMul(matrixes)
         break
+
+
+# In[ ]:
+
+
+
 
