@@ -1,35 +1,31 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[123]:
 
 
 import random
 import time
+import numpy as np
 
 
-# In[14]:
+# In[124]:
 
 
-def stdMul(ma, mb, result):
+def stdMul(A, B):
     """
     Multiplies two given matrixes and measure time taken to multiply them.
     """
-    size = len(ma)
-    start = 0
-    end = 0
-
-    start = time.process_time()
-    for i in range(size):
-        for j in range(size):
-            for k in range(size):
-                result[i][j] += ma[i][k] * mb[k][j]
-    end = time.process_time()
+    start = time.perf_counter()
+    C = A @ B
+    end = time.perf_counter()
     
-    print("Elapsed Time: {elapsed:.5f} s".format(elapsed=(end-start)))
+    print("Elapsed Time: {elapsed:f} s".format(elapsed=(end-start)))
+    
+    return C
 
 
-# In[8]:
+# In[125]:
 
 
 def lineMul(matrixes):
@@ -37,27 +33,23 @@ def lineMul(matrixes):
     pass
 
 
-# In[9]:
+# In[129]:
 
 
 def createRandomMatrix(size):
     """
-    Returns a matrix of size 'size' filled with random integer numbers from 0 to 100.
+    Returns a matrix of size 'size' with random values from 0 to 100.
     """
-    matrix = [[random.randint(0, 100) for j in range(size)] for i in range(size)]
-    
-    return matrix
+    return np.random.randint(0,101,(size, size))
 
 def createZeroMatrix(size):
     """
-    Returns a matrix of size 'size' filled with random integer numbers from 0 to 100.
+    Returns a zero matrix of size 'size'.
     """
-    matrix = [[0 for j in range(size)] for i in range(size)]
-    
-    return matrix
+    return numpy.zeros(shape=(size, size))
 
 
-# In[10]:
+# In[127]:
 
 
 def printMatrix(matrix):
@@ -71,14 +63,14 @@ def printMatrix(matrix):
         string += "|"
         for j in range(size):
             string += " "
-            string += "{value:03d}".format(value=matrix[i][j])
+            string += "{value:05d}".format(value=matrix[i][j])
             
         string += " |\n"
         
     print(string)
 
 
-# In[15]:
+# In[128]:
 
 
 while True:
@@ -102,16 +94,21 @@ while True:
     
     ma = createRandomMatrix(size)
     mb = createRandomMatrix(size)
-    mc = createZeroMatrix(size)
- 
+    
     if option == 1:
         print("Standard Multiplication")
-        stdMul(ma, mb, mc)
+        mc = stdMul(ma, mb)
         break
     else:
         print("Line Multiplication")
 #         lineMul(matrixes)
         break
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
