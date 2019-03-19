@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[123]:
+# In[20]:
 
 
 import random
@@ -9,7 +9,7 @@ import time
 import numpy as np
 
 
-# In[124]:
+# In[21]:
 
 
 def stdMul(A, B):
@@ -25,15 +25,53 @@ def stdMul(A, B):
     return C
 
 
-# In[125]:
+# In[22]:
 
 
-def lineMul(matrixes):
-    print('Line Multiplication')
-    pass
+def lineMul(A, B):
+    """
+    Multiplies two given matrixes by multiplying one element of the first matrix by the correspondent line of the second matrix
+    """
+    size = len(A)
+    C = np.zeros((size, size))
+    
+    start = time.perf_counter()
+    for i in range(size):
+        for j in range(size):
+            C[i] += A[i][j] * B[j]
+    end = time.perf_counter()
+    
+    print("Elapsed Time: {elapsed:f} s".format(elapsed=(end-start)))
+    
+    return C
 
 
-# In[129]:
+# In[23]:
+
+
+def blockMul(A, B, block_size=128):
+    """
+    Multiplies two given matrixes breaking them into small blocks of size block_size
+    """
+    size = len(A)
+    C = np.zeros((size, size))
+    
+    start = time.perf_counter()
+    for i0 in range(0, size, block_size):
+        for j0 in range(0, size, block_size):
+            for k0 in range(0, size, block_size):
+                for i in range(i0, min(i0 + block_size, size)):
+                    for j in range(j0, min(j0 + block_size, size)):
+                        for k in range(k0, min(k0 + block_size, size)):
+                            C[i][j] += A[i][k] * B[k][j]
+    end = time.perf_counter()
+    
+    print("Elapsed Time: {elapsed:f} s".format(elapsed=(end-start)))
+    
+    return C
+
+
+# In[24]:
 
 
 def createRandomMatrix(size):
@@ -49,7 +87,7 @@ def createZeroMatrix(size):
     return numpy.zeros(shape=(size, size))
 
 
-# In[127]:
+# In[25]:
 
 
 def printMatrix(matrix):
@@ -63,25 +101,26 @@ def printMatrix(matrix):
         string += "|"
         for j in range(size):
             string += " "
-            string += "{value:05d}".format(value=matrix[i][j])
+            string += "{value:05.0f}".format(value=matrix[i][j])
             
         string += " |\n"
         
     print(string)
 
 
-# In[128]:
+# In[26]:
 
 
 while True:
     print("Matrix multiplication")
     print("1. Standard multiplication")
     print("2. Line multiplication")
+    print("3. Block multiplication")
 
     option = int(input("Selection? "))
   
-    if option not in [0,1,2]:
-        print('\nInvalid value. Value must be 1 or 2, or 0 to quit\n')
+    if option not in [0,1,2, 3]:
+        print('\nInvalid value. Value must be 1, 2 or 3; or 0 to quit\n')
         continue
     elif option == 0:
         break
@@ -99,20 +138,15 @@ while True:
         print("Standard Multiplication")
         mc = stdMul(ma, mb)
         break
-    else:
+    elif option == 2:
         print("Line Multiplication")
-#         lineMul(matrixes)
+        mc = lineMul(ma, mb)
         break
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
+    else:
+        print("Block Multiplication")
+        block_size = int(input("Block size: "))
+        mc = blockMul(ma, mb, block_size)
+        break
 
 
 
