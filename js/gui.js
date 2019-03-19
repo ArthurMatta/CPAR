@@ -16,12 +16,12 @@ const mode = process.argv[2];
 const size = process.argv[3];
 
 /* verify variables */
-if (mode == null || mode instanceof Number) {
+if (mode == null) {
   console.error("Mode must be 0 - matrix mult, 1- matrix line mult.");
   process.exit(-1);
 }
 
-if (size == null || size instanceof Number) {
+if (size == null) {
   console.error("Size must be a integer number.");
   process.exit(-1);
 }
@@ -44,7 +44,9 @@ console.log(
 );
 
 /* get starting time */
-console.log("Started multiplicating matrix...\n");
+console.log(
+  `Started multiplicating matrix in ${mode == 0 ? "normal" : "line"} mode ...\n`
+);
 
 const startTime = process.hrtime.bigint();
 
