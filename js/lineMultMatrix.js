@@ -1,22 +1,25 @@
 const multMatrixLine = (m1, m2) => {
   let finalMatrix = [];
 
-  m1.forEach(lineM1 => {
-    let line = [];
+  console.log(m1);
+  console.log(m2);
 
-    lineM1.forEach(elementLineM1 => {
-      let value = 0;
+  m1.forEach((line1, index) => {
+    let line = new Array(m1.length);
 
-      m2.forEach((lineM2, indexLineM2) => {
-        // M1 = A1 * A2 + A1 * B2
-        value += elementLineM1 * lineM2[indexLineM2];
+    line1.forEach(element1 => {
+      // TODO: inicializar matriz com numeros 0
+      line[index] = 0;
+      m2[index].forEach((element2, index2) => {
+        const value = element1 * element2;
+        line[index2] += value;
       });
-
-      line.push(value);
     });
 
-    finalMatrix.push(line);
+    console.log(line);
   });
+
+  console.log(finalMatrix);
 
   return finalMatrix;
 };
