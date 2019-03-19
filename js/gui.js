@@ -1,10 +1,30 @@
 const matrixMult = require("./matrixMult");
 const matrixGenerator = require("./generator");
+const matrixLineMult = require("./matrixMultLine");
 
 /* throw error if not receive matrix size in cmd argument */
-const size = process.argv[2];
-if (process.argv.length !== 3 || size == null)
-  throw new Error("usage: node ./gui [size (number) ]");
+if (process.argv.length !== 4) {
+  console.log("Usage: node ./gui [mode] [size]\n");
+  console.log(" Mode: 0 - Matrix Multiplication");
+  console.log("       1 - Matrix Line Multiplication\n");
+  console.log(" Size: matrix size (ex: 1000)");
+
+  process.exit(-1);
+}
+
+const mode = process.argv[2];
+const size = process.argv[3];
+
+/* verify variables */
+if (mode == null || mode instanceof Number) {
+  console.error("Mode must be 0 - matrix mult, 1- matrix line mult.");
+  process.exit(-1);
+}
+
+if (size == null || size instanceof Number) {
+  console.error("Size must be a integer number.");
+  process.exit(-1);
+}
 
 /* logs */
 console.log(`Generating random ${size}x${size} matrix...\n`);
@@ -29,7 +49,8 @@ console.log("Started multiplicating matrix...\n");
 const startTime = process.hrtime.bigint();
 
 /* multiplicate matrix */
-matrixMult(matrixA, matrixB);
+if (mode == 0) matrixMult(matrixA, matrixB);
+else matrixLineMult(matrixA, matrixB);
 
 /* get ending time */
 const endTime = process.hrtime.bigint();
