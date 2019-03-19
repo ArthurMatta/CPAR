@@ -1,6 +1,6 @@
-const matrixMult = require("./matrixMult");
+const matrixMult = require("./multMatrix");
 const matrixGenerator = require("./generator");
-const matrixLineMult = require("./matrixMultLine");
+const matrixLineMult = require("./lineMultMatrix");
 
 /* throw error if not receive matrix size in cmd argument */
 if (process.argv.length !== 4) {
