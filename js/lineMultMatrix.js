@@ -1,27 +1,20 @@
-const multMatrixLine = (m1, m2) => {
-  let finalMatrix = [];
 
-  console.log(m1);
-  console.log(m2);
 
-  m1.forEach((line1, index) => {
-    let line = new Array(m1.length);
+const multMatrixLine = (m1 , m2 ) => {
 
-    line1.forEach(element1 => {
-      // TODO: inicializar matriz com numeros 0
-      line[index] = 0;
-      m2[index].forEach((element2, index2) => {
-        const value = element1 * element2;
-        line[index2] += value;
-      });
-    });
+  // generate empty matrix
+  let matrix = Array(m1.length).fill(Array(m2.length).fill(0));
 
-    console.log(line);
-  });
+  // calculate matrix
+  for(let i = 0; i < m1.length; i++){
+    for(let j = 0; j < m2.length; j++){
+      for(let k = 0; k < m2.length; k++){
+        matrix[i][k] += m1[i][j] * m2[j][k];
+      }
+    }
+  }
 
-  console.log(finalMatrix);
-
-  return finalMatrix;
+  return matrix;
 };
 
 module.exports = multMatrixLine;
