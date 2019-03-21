@@ -1,23 +1,30 @@
 const matrixMult = require("./multMatrix");
 const matrixGenerator = require("./generator");
 const matrixLineMult = require("./lineMultMatrix");
+const blockLineMultMatrix = require("./blockLineMultMatrix");
+
+const mode = process.argv[2];
+const size = process.argv[3];
+const blockSize = process.argv[4];
 
 /* throw error if not receive matrix size in cmd argument */
-if (process.argv.length !== 4) {
-  console.log("Usage: node ./gui [mode] [size]\n");
+if (process.argv.length !== 4 && (process.argv.length !== 5 && mode == "2")) {
+  console.log(
+    "Usage: node ./gui [mode] [size] [blockSize(block multiplication only)] \n"
+  );
   console.log(" Mode: 0 - Matrix Multiplication");
   console.log("       1 - Matrix Line Multiplication\n");
+  console.log("       2 - Matrix Block Line Multiplication\n");
   console.log(" Size: matrix size (ex: 1000)");
 
   process.exit(-1);
 }
 
-const mode = process.argv[2];
-const size = process.argv[3];
-
 /* verify variables */
 if (mode == null) {
-  console.error("Mode must be 0 - matrix mult, 1- matrix line mult.");
+  console.error(
+    "Mode must be 0 - matrix mult, 1- matrix line mult, 2- matrix block line mult."
+  );
   process.exit(-1);
 }
 
@@ -44,15 +51,30 @@ console.log(
 );
 
 /* get starting time */
-console.log(
-  `Started multiplicating matrix in ${mode == 0 ? "normal" : "line"} mode ...\n`
-);
-
 const startTime = process.hrtime.bigint();
 
-/* multiplicate matrix */
-if (mode == 0) matrixMult(matrixA, matrixB);
-else matrixLineMult(matrixA, matrixB);
+switch (mode) {
+  case "0":
+    console.log(`Started multiplicating matrix in normal mode ...\n`);
+    matrixMult(matrixA, matrixB);
+    break;
+  case "1":
+    console.log(`Started multiplicating matrix in line mode ...\n`);
+    matrixLineMult(matrixA, matrixB);
+    break;
+  case "2":
+    if (blockSize == null) {
+      console.error("Blocksize not specified.\n");
+      process.exit(-1);
+    }
+    console.log("Started multiplicating matrix in block line mode ...\n");
+    blockLineMultMatrix(matrixA, matrixB, blockSize);
+    break;
+  default:
+    console.error("No such mode (0-2).");
+    process.exit(-1);
+    break;
+}
 
 /* get ending time */
 const endTime = process.hrtime.bigint();
