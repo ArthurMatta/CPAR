@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
 # In[1]:
@@ -6,57 +6,93 @@
 
 import random
 import time
+import numpy as np
 
 
-# In[7]:
+# In[19]:
 
 
-def stdMul(matrixes):
+def stdMul(A, B):
     """
-    Multiplies two given matrixes and measure time taken to multiply them.
+    Multiplies two given matrixes.
     """
-    mc = [[0 for j in range(size)] for i in range(size)]
-    start = 0
-    end = 0
+    C = createZeroMatrix(size)
+    
+    start = time.perf_counter()
+    for i in range(len(A)):
+        for j in range(len(B[0])):
+            for k in range(len(B)):
+                C[i][j] += A[i][k] * B[k][j]
+    end = time.perf_counter()
+    
+    print("Elapsed Time: {elapsed:f} s".format(elapsed=(end-start)))
+    
+    return C
 
-    start = time.perf_counter_ns()
+
+# In[9]:
+
+
+def lineMul(A, B):
+    """
+    Multiplies two given matrixes by multiplying one element of the first matrix by the correspondent line of the second matrix
+    """
+    size = len(A)
+    C = createZeroMatrix(size)
+    
+    start = time.perf_counter()
     for i in range(size):
         for j in range(size):
-            for k in range(size):
-                mc[i][j] += matrixes['A'][i][k] * matrixes['B'][k][j]
-    end = time.perf_counter_ns() 
+            C[i] += A[i][j] * B[j]
+    end = time.perf_counter()
     
-#     print("Result Matrix")
-#     printMatrix(mc)
+    print("Elapsed Time: {elapsed:f} s".format(elapsed=(end-start)))
     
-    print("Elapsed Time: {elapsed:.0f} ns".format(elapsed=(end-start)))
+    return C
 
 
-# In[3]:
+# In[10]:
 
 
-def lineMul(matrixes):
-    print('Line Multiplication')
-    pass
-
-
-# In[4]:
-
-
-def MatrixMaker(size):
+def blockMul(A, B, block_size=128):
     """
-    Returns a dict with square matrixes A and B of size 'size' filled with random integer numbers from 0 to size.
+    Multiplies two given matrixes breaking them into small blocks of size block_size
     """
-    ma = [[random.randint(0, size) for j in range(size)] for i in range(size)]
-    mb = [[random.randint(0, size) for j in range(size)] for i in range(size)]
+    size = len(A)
+    C = createZeroMatrix(size)
     
+    start = time.perf_counter()
+    for i0 in range(0, size, block_size):
+        for j0 in range(0, size, block_size):
+            for k0 in range(0, size, block_size):
+                for i in range(i0, min(i0 + block_size, size)):
+                    for j in range(j0, min(j0 + block_size, size)):
+                        for k in range(k0, min(k0 + block_size, size)):
+                            C[i][j] += A[i][k] * B[k][j]
+    end = time.perf_counter()
     
-    mb.reverse()
+    print("Elapsed Time: {elapsed:f} s".format(elapsed=(end-start)))
     
-    return dict(zip(['A', 'B'], [ma, mb]))
+    return C
 
 
-# In[5]:
+# In[26]:
+
+
+def createRandomMatrix(size, lower, higher):
+    """
+    Returns a matrix of size 'size' with random values in [lower, higher).
+    """
+    return np.random.randint(lower, higher, (size, size))
+
+def createZeroMatrix(size):
+    """
+    Returns a zero matrix of size 'size'.
+    """
+    return np.zeros(shape=(size, size))
+
+
+# In[27]:
 
 
 def printMatrix(matrix):
@@ -70,49 +106,63 @@ def printMatrix(matrix):
         string += "|"
         for j in range(size):
             string += " "
-            string += "{value:03d}".format(value=matrix[i][j])
+            string += "{value:05.0f}".format(value=matrix[i][j])
             
         string += " |\n"
         
     print(string)
 
 
-# In[8]:
+# In[30]:
 
 
 while True:
     print("Matrix multiplication")
     print("1. Standard multiplication")
     print("2. Line multiplication")
+    print("3. Block multiplication")
 
     option = int(input("Selection? "))
   
-    if option not in [0,1,2]:
-        print('\nInvalid value. Value must be 1 or 2, or 0 to quit\n')
+    if option not in [0,1,2, 3]:
+        print('\nInvalid value. Value must be 1, 2 or 3; or 0 to quit\n')
         continue
     elif option == 0:
         break
         
-    print('\n')
- 
     size = int(input('Dimension? '))
     
     if size <= 0:
         print('Invalid dimension.\n')
         continue
     
-    matrixes = MatrixMaker(size)
+    ma = createRandomMatrix(size, 0, 101)
+    mb = createRandomMatrix(size, 0, 101)
     
-#     for i in matrixes.items():
-#         print("Matrix " + i[0])
-#         printMatrix(i[1])
- 
     if option == 1:
         print("Standard Multiplication")
-        stdMul(matrixes)
+        mc = stdMul(ma, mb)
+        break
+    elif option == 2:
+        print("Line Multiplication")
+        mc = lineMul(ma, mb)
         break
     else:
-        print("Line Multiplication")
-        lineMul(matrixes)
+        print("Block Multiplication")
+        block_size = int(input("Block size: "))
+        mc = blockMul(ma, mb, block_size)
         break
+        
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
