@@ -1,29 +1,23 @@
-const blockLineMultMatrix = (m1, m2, blocksize) => {
-  let block1 = [];
-  let block2 = [];
+const blockLineMultMatrix = (B, C, bsize) => {
+  const size = B.length;
 
-  console.log(m1);
-  console.log(m2);
+  let A = Array(size).fill(Array(size).fill(0));
 
-  for (let i = 0; i < blocksize; i++) {
-    let line = [];
-    let line2 = [];
-    for (let j = 0; j < blocksize; j++) {
-      line.push(m1[i][j]);
-      line2.push(m2[i][j]);
+  for (i1 = 0; i1 < size; i1 += bsize) {
+    for (j1 = 0; j1 < size; j1 += bsize) {
+      for (k1 = 0; k1 < size; k1 += bsize) {
+        for (i = parseInt(i1); i < i1 + bsize && i < size; i++) {
+          for (j = parseInt(j1); j < j1 + bsize && j < size; j++) {
+            for (k = parseInt(k1); k < k1 + bsize && k < size; k++) {
+              A[i][k] += B[i][j] * C[j][k];
+            }
+          }
+        }
+      }
     }
-    block1.push(line);
-    block2.push(line2);
   }
 
-  console.log("Calculated \n");
-  console.log(block1);
-  console.log(block2);
-
-  return {
-    m1: block1,
-    m2: block2
-  };
+  return A;
 };
 
 module.exports = blockLineMultMatrix;

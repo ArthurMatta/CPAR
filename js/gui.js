@@ -33,6 +33,13 @@ if (size == null) {
   process.exit(-1);
 }
 
+// verify matrix size
+
+if (size % 2 !== 0) {
+  console.error("Matrix must be square.");
+  process.exit(-1);
+}
+
 /* logs */
 console.log(`Generating random ${size}x${size} matrix...\n`);
 const matrixGeneratorStartingTime = process.hrtime.bigint();
@@ -67,8 +74,15 @@ switch (mode) {
       console.error("Blocksize not specified.\n");
       process.exit(-1);
     }
-    console.log("Started multiplicating matrix in block line mode ...\n");
-    blockLineMultMatrix(matrixA, matrixB, blockSize);
+
+    const finalBlockSize =
+      blockSize > matrixA.length ? matrixA.length : blockSize;
+
+    console.log(
+      `Started multiplicating matrix in block line mode with blocksize ${finalBlockSize}...\n`
+    );
+
+    blockLineMultMatrix(matrixA, matrixB, finalBlockSize);
     break;
   default:
     console.error("No such mode (0-2).");
