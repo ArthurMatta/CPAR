@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[20]:
+# In[1]:
 
 
 import random
@@ -9,15 +9,20 @@ import time
 import numpy as np
 
 
-# In[21]:
+# In[19]:
 
 
 def stdMul(A, B):
     """
-    Multiplies two given matrixes and measure time taken to multiply them.
+    Multiplies two given matrixes.
     """
+    C = createZeroMatrix(size)
+    
     start = time.perf_counter()
-    C = A @ B
+    for i in range(len(A)):
+        for j in range(len(B[0])):
+            for k in range(len(B)):
+                C[i][j] += A[i][k] * B[k][j]
     end = time.perf_counter()
     
     print("Elapsed Time: {elapsed:f} s".format(elapsed=(end-start)))
@@ -25,7 +30,7 @@ def stdMul(A, B):
     return C
 
 
-# In[22]:
+# In[9]:
 
 
 def lineMul(A, B):
@@ -33,7 +38,7 @@ def lineMul(A, B):
     Multiplies two given matrixes by multiplying one element of the first matrix by the correspondent line of the second matrix
     """
     size = len(A)
-    C = np.zeros((size, size))
+    C = createZeroMatrix(size)
     
     start = time.perf_counter()
     for i in range(size):
@@ -46,7 +51,7 @@ def lineMul(A, B):
     return C
 
 
-# In[23]:
+# In[10]:
 
 
 def blockMul(A, B, block_size=128):
@@ -54,7 +59,7 @@ def blockMul(A, B, block_size=128):
     Multiplies two given matrixes breaking them into small blocks of size block_size
     """
     size = len(A)
-    C = np.zeros((size, size))
+    C = createZeroMatrix(size)
     
     start = time.perf_counter()
     for i0 in range(0, size, block_size):
@@ -71,23 +76,23 @@ def blockMul(A, B, block_size=128):
     return C
 
 
-# In[24]:
+# In[26]:
 
 
-def createRandomMatrix(size):
+def createRandomMatrix(size, lower, higher):
     """
-    Returns a matrix of size 'size' with random values from 0 to 100.
+    Returns a matrix of size 'size' with random values in [lower, higher).
     """
-    return np.random.randint(0,101,(size, size))
+    return np.random.randint(lower, higher, (size, size))
 
 def createZeroMatrix(size):
     """
     Returns a zero matrix of size 'size'.
     """
-    return numpy.zeros(shape=(size, size))
+    return np.zeros(shape=(size, size))
 
 
-# In[25]:
+# In[27]:
 
 
 def printMatrix(matrix):
@@ -108,7 +113,7 @@ def printMatrix(matrix):
     print(string)
 
 
-# In[26]:
+# In[30]:
 
 
 while True:
@@ -131,8 +136,8 @@ while True:
         print('Invalid dimension.\n')
         continue
     
-    ma = createRandomMatrix(size)
-    mb = createRandomMatrix(size)
+    ma = createRandomMatrix(size, 0, 101)
+    mb = createRandomMatrix(size, 0, 101)
     
     if option == 1:
         print("Standard Multiplication")
@@ -147,6 +152,17 @@ while True:
         block_size = int(input("Block size: "))
         mc = blockMul(ma, mb, block_size)
         break
+        
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
 
 
 
