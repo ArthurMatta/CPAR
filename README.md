@@ -2,7 +2,12 @@
 
 Repository for the Parallel Computer couse in FEUP
 
-# Runnning matrix multiplication algorithms in Javascript
+### CLONING THIS REPOSITORY
+
+When cloning this repository add '--recurse-submodules' to initialize and update papi submodule.<br>
+git clone --recurse-submodules \<url\>
+
+### RUNNING THE JS FILE
 
 To run the algorithms in javascript, you must install node.js in your computer.
 
@@ -27,10 +32,6 @@ Mode:
 2 - Matrix Block Line Multiplication Size: matrix size (ex: 1000)
 ```
 
-### CLONING THIS REPOSITORY
-
-When cloning this repository add '--recurse-submodules' to initialize and update papi submodule.<br>
-git clone --recurse-submodules \<url\>
 
 ### BEFORE RUNNING THE CPP FILE
 
