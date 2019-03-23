@@ -40,6 +40,6 @@ Make sure that the file /proc/sys/kernel/perf_event_paranoid has value -1
 ### RUNNING THE CPP FILE
 
 ```
-g++ -O2 mulmatrix.cpp -o mulmatrix -lpapi<br>
+g++ -O2 mulmatrix.cpp -o mulmatrix -lpapi
 ./mulmatrix
 ```
