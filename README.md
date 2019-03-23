@@ -7,6 +7,8 @@ Repository for the Parallel Computer couse in FEUP
 When cloning this repository add '--recurse-submodules' to initialize and update papi submodule.<br>
 git clone --recurse-submodules \<url\>
 
+## JS
+
 ### RUNNING THE JS FILE
 
 To run the algorithms in javascript, you must install node.js in your computer.
@@ -32,6 +34,7 @@ Mode:
 2 - Matrix Block Line Multiplication Size: matrix size (ex: 1000)
 ```
 
+## C / CPP
 
 ### BEFORE RUNNING THE CPP FILE
 
